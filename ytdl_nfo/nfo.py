@@ -1,10 +1,11 @@
-import yaml
 import ast
 import datetime as dt
 import xml.etree.ElementTree as ET
-import pkg_resources
 from collections import defaultdict
 from xml.dom import minidom
+
+import pkg_resources
+import yaml
 
 
 class Nfo:
