@@ -27,10 +27,10 @@ While this package was originally built for youtube-dl, the goal is to maintain 
 ### Package from Source
 
 1. Install [Python 3.8](https://www.python.org/downloads/) (or later)
-2. Install [Python Poetry](https://python-poetry.org/)
+2. Install [uv](https://docs.astral.sh/uv/)
 3. Clone the repo using `git clone https://github.com/owdevel/ytdl_nfo.git`
-4. Create a dev environment with `poetry install`
-5. Build with `poetry build`
+4. Create a dev environment with `uv sync`
+5. Build with `uv build`
 6. Install from the `dist` directory with `pip install ./dist/ytdl_nfo-x.x.x.tar.gz`
 
 ## Usage
@@ -77,18 +77,32 @@ This is a small project I started to learn how to use the Python packaging syste
 
 ### Development Environment
 
+#### VS Code Dev Container (Recommended)
+
+1. Install [Docker](https://www.docker.com/get-started)
+2. Install [VS Code](https://code.visualstudio.com/) with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+3. Clone your fork using `git clone git@github.com:<YOUR_USERNAME>/ytdl-nfo.git`
+4. Open the project in VS Code
+5. When prompted, click "Reopen in Container" (or use Command Palette → "Dev Containers: Reopen in Container")
+6. VS Code will build the container with all dependencies pre-installed
+7. Run the application using `uv run ytdl-nfo`
+
+The devcontainer includes Python 3.11, uv, ruff, and pytest pre-configured.
+
+#### Local Development (Alternative)
+
 1. Install [Python 3.8](https://www.python.org/downloads/) (or later)
-2. Install [Python Poetry](https://python-poetry.org/)
+2. Install [uv](https://docs.astral.sh/uv/)
 3. Create a fork of this repo
 4. Clone your fork using `git clone git@github.com:<YOUR_USERNAME>/ytdl-nfo.git`
-5. Change to the project directory and initialize the environment using poetry
+5. Change to the project directory and initialize the environment using uv
 
     ```bash
     cd ytdl-nfo
-    poetry install
+    uv sync
     ```
 
-6. Run the application using `poetry run ytdl-nfo`, or use `poetry shell` to enter the virtual env
+6. Run the application using `uv run ytdl-nfo`
 
 ## Todo
 
