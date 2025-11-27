@@ -7,13 +7,15 @@
 ## Overview
 
 This design document outlines the refactoring of ytdl-nfo to:
-1. Migrate from Poetry to uv for dependency management and tooling
-2. Replace flake8/autopep8 with ruff for linting and formatting
-3. Remove Nix/flakes development environment
-4. Add comprehensive pytest-based test suite for core functionality
+1. Set up VS Code Dev Container for containerized development
+2. Migrate from Poetry to uv for dependency management and tooling
+3. Replace flake8/autopep8 with ruff for linting and formatting
+4. Remove Nix/flakes development environment
+5. Add comprehensive pytest-based test suite for core functionality
 
 ## Goals
 
+- **Consistency**: Containerized development environment ensures identical setup across all machines
 - **Performance**: Faster dependency resolution and package operations via uv
 - **Simplicity**: Reduced tooling complexity and configuration overhead
 - **Modern Standards**: PEP 621 compliance and alignment with Python ecosystem direction
@@ -49,19 +51,46 @@ This design document outlines the refactoring of ytdl-nfo to:
 
 **Rationale**: All-in-one tool (linter + formatter), significantly faster, increasingly becoming the Python ecosystem standard, simpler configuration.
 
+### Development Environment
+**VS Code Dev Container** with full development environment.
+
+**Rationale**: Ensures consistent development environment across all machines, eliminates "works on my machine" issues, pre-installs all tools (Python, uv, ruff, pytest), provides seamless VS Code integration.
+
 ## Architecture
 
 ### Two-Phase Structure
 
-#### Phase A: Tooling Migration
-Complete migration from Poetry/Nix to uv/ruff ecosystem.
+#### Phase A: Tooling Migration + Containerization
+Set up dev container and complete migration from Poetry/Nix to uv/ruff ecosystem.
 
 #### Phase B: Test Suite Addition
-Build pytest-based test suite on the new foundation.
+Build pytest-based test suite on the new foundation (inside container).
 
-## Phase A: Tooling Migration
+## Phase A: Tooling Migration + Containerization
 
-### 1. Remove Nix Development Environment
+### 1. Create VS Code Dev Container
+
+**Create `.devcontainer/` directory structure:**
+- `.devcontainer/devcontainer.json` - VS Code configuration
+- `.devcontainer/Dockerfile` - Container image definition
+
+**Dockerfile specifications:**
+- Base image: `python:3.8-slim` (or later)
+- Install uv: Latest version via official installer
+- Install ruff: Via pip or uv
+- Install pytest and pytest-cov: Via pip or uv
+- Set up working directory
+- Configure Python environment
+
+**devcontainer.json specifications:**
+- Name: "ytdl-nfo Python Development"
+- Build from Dockerfile
+- VS Code extensions: Python, Pylance, Ruff
+- Settings: Configure Python interpreter, enable ruff linter/formatter
+- Post-create command: `uv sync` to install dependencies
+- Features: Git (if needed)
+
+### 2. Remove Nix Development Environment
 
 **Files to delete:**
 - `flake.nix`
@@ -69,9 +98,11 @@ Build pytest-based test suite on the new foundation.
 
 **Documentation updates:**
 - Remove Nix setup instructions from README.md
+- Replace Nix section with devcontainer instructions in README.md
 - Remove Nix alternative from CLAUDE.md development environment section
+- Add devcontainer workflow to CLAUDE.md
 
-### 2. Update pyproject.toml
+### 3. Update pyproject.toml
 
 **Convert to PEP 621 standard format:**
 
@@ -147,21 +178,28 @@ uv sync
 ### 4. Update Documentation
 
 **README.md changes:**
+- Add devcontainer setup instructions
 - Replace Poetry installation instructions with uv
 - Remove Nix development environment section
-- Update "Package from Source" to use uv instead of Poetry
-- Update development commands to use `uv run` instead of `poetry run`
+- Update "Package from Source" to use uv inside container
+- Update development commands to run in container context
+- Add "Development with VS Code" section explaining container workflow
 
 **CLAUDE.md changes:**
+- Add "Development Environment" section for devcontainer
+  - Opening project in container
+  - Running commands inside container
+  - Container rebuild when needed
 - Replace Poetry commands with uv equivalents:
-  - `poetry install` → `uv sync`
-  - `poetry shell` → `uv run` (or shell activation via virtual env)
-  - `poetry run ytdl-nfo` → `uv run ytdl-nfo`
-  - `poetry build` → `uv build`
+  - `poetry install` → `uv sync` (inside container)
+  - `poetry shell` → Not needed (already in container)
+  - `poetry run ytdl-nfo` → `uv run ytdl-nfo` (inside container)
+  - `poetry build` → `uv build` (inside container)
 - Update linting section:
-  - `poetry run flake8` → `uv run ruff check`
-  - `poetry run autopep8` → `uv run ruff format`
+  - `poetry run flake8` → `uv run ruff check` (inside container)
+  - `poetry run autopep8` → `uv run ruff format` (inside container)
 - Remove Nix alternative setup
+- Add note that all commands assume running inside devcontainer
 
 ### 5. Ruff Configuration
 
@@ -181,8 +219,14 @@ uv sync
 
 ### 6. Verification
 
-**Post-migration validation:**
+**Post-migration validation (all commands run inside devcontainer):**
 ```bash
+# Open project in devcontainer (VS Code will prompt)
+# Or use: Command Palette → "Dev Containers: Reopen in Container"
+
+# Verify container built successfully and uv is available
+uv --version
+
 # Install and verify dependencies
 uv sync
 uv tree
@@ -372,21 +416,26 @@ uv run pytest -m integration
 
 ## Migration Checklist
 
-### Phase A: Tooling Migration
+### Phase A: Tooling Migration + Containerization
 
+- [ ] Create `.devcontainer/` directory
+- [ ] Create `.devcontainer/Dockerfile` with Python 3.8+, uv, ruff, pytest
+- [ ] Create `.devcontainer/devcontainer.json` with VS Code configuration
+- [ ] Test devcontainer builds successfully
 - [ ] Delete `flake.nix` and `flake.lock`
 - [ ] Update `pyproject.toml` to PEP 621 format
 - [ ] Add `[project.optional-dependencies]` for dev dependencies
 - [ ] Add `[tool.ruff]` configuration
 - [ ] Add `[tool.pytest.ini_options]` configuration
-- [ ] Run `uv sync` to install dependencies and create lock file
+- [ ] Open project in devcontainer
+- [ ] Run `uv sync` (inside container) to install dependencies and create lock file
 - [ ] Delete `poetry.lock`
-- [ ] Update README.md (remove Nix, update Poetry → uv)
-- [ ] Update CLAUDE.md (remove Nix, update commands)
-- [ ] Verify build: `uv build`
-- [ ] Verify CLI: `uv run ytdl-nfo --config`
-- [ ] Run ruff linter: `uv run ruff check ytdl_nfo`
-- [ ] Run ruff formatter: `uv run ruff format ytdl_nfo`
+- [ ] Update README.md (add devcontainer, remove Nix, update Poetry → uv)
+- [ ] Update CLAUDE.md (add devcontainer workflow, remove Nix, update commands)
+- [ ] Verify build: `uv build` (inside container)
+- [ ] Verify CLI: `uv run ytdl-nfo --config` (inside container)
+- [ ] Run ruff linter: `uv run ruff check ytdl_nfo` (inside container)
+- [ ] Run ruff formatter: `uv run ruff format ytdl_nfo` (inside container)
 - [ ] Commit migration changes
 
 ### Phase B: Test Suite Addition
@@ -408,16 +457,19 @@ uv run pytest -m integration
 ## Success Criteria
 
 **Phase A Complete:**
+- ✓ Devcontainer builds successfully
+- ✓ VS Code opens project in container
+- ✓ uv is available and working inside container
 - ✓ No Poetry files remain (`poetry.lock` deleted)
 - ✓ No Nix files remain (`flake.nix`, `flake.lock` deleted)
-- ✓ `uv sync` successfully installs all dependencies
-- ✓ `uv build` successfully builds package
-- ✓ `uv run ytdl-nfo` CLI works correctly
-- ✓ `uv run ruff check` passes or shows actionable issues
-- ✓ Documentation reflects new tooling
+- ✓ `uv sync` successfully installs all dependencies (inside container)
+- ✓ `uv build` successfully builds package (inside container)
+- ✓ `uv run ytdl-nfo` CLI works correctly (inside container)
+- ✓ `uv run ruff check` passes or shows actionable issues (inside container)
+- ✓ Documentation reflects new tooling and container workflow
 
 **Phase B Complete:**
-- ✓ Test suite runs via `uv run pytest`
+- ✓ Test suite runs via `uv run pytest` (inside container)
 - ✓ Core functionality tests pass
 - ✓ Coverage report shows critical paths tested
 - ✓ Integration tests validate end-to-end workflows
