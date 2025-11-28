@@ -63,3 +63,38 @@ class TestYtdlNfoExtractorDetection:
         ytdl = Ytdl_nfo(str(json_file))
         # Should handle gracefully
         assert ytdl.extractor is None or isinstance(ytdl.extractor, str)
+
+
+class TestYtdlNfoFilenameDerivarion:
+    """Test filename derivation logic."""
+
+    def test_strips_info_json_suffix(self, temp_json_file):
+        """Test that .info.json suffix is stripped for filename."""
+        ytdl = Ytdl_nfo(str(temp_json_file))
+        # temp_json_file is .../test_video.info.json
+        # filename should be .../test_video
+        assert ytdl.filename.endswith("test_video")
+        assert not ytdl.filename.endswith(".info.json")
+
+    def test_uses_filename_field_fallback(self, tmp_path):
+        """Test that _filename field is used when available."""
+        json_data = {
+            "id": "test123",
+            "extractor": "youtube",
+            "_filename": "Custom Filename.mp4",
+        }
+        json_file = tmp_path / "metadata.json"  # Not ending in .info.json
+        with open(json_file, "w", encoding="utf-8") as f:
+            json.dump(json_data, f)
+
+        ytdl = Ytdl_nfo(str(json_file))
+        # Should derive from _filename field
+        assert "Custom Filename" in ytdl.filename
+
+    def test_nfo_path_generation(self, temp_json_file):
+        """Test that NFO path is correctly generated."""
+        ytdl = Ytdl_nfo(str(temp_json_file))
+        nfo_path = ytdl.get_nfo_path()
+
+        assert nfo_path.endswith(".nfo")
+        assert "test_video.nfo" in nfo_path
