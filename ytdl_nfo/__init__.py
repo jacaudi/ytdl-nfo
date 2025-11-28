@@ -7,7 +7,11 @@ from .Ytdl_nfo import Ytdl_nfo
 
 def main():
     parser = argparse.ArgumentParser(
-        description="ytdl_nfo, a youtube-dl utility to convert the output of  'youtube-dl --write-info-json' to an NFO for use with Kodi, Plex, Emby, Jellyfin, etc."
+        description=(
+            "ytdl_nfo, a youtube-dl utility to convert the output of "
+            "'youtube-dl --write-info-json' to an NFO for use with "
+            "Kodi, Plex, Emby, Jellyfin, etc."
+        )
     )
     parser.add_argument(
         "--config",

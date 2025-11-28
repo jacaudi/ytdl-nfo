@@ -2,12 +2,22 @@
 name = "ytdl-nfo"
 version = "0.3.0"
 description = "Utility to convert youtube-dl/yt-dlp json metadata to .nfo"
-license = { text = "Unlicense" }
 readme = "README.md"
 requires-python = ">=3.8"
+license = { text = "Unlicense" }
 authors = [{ name = "Owen", email = "owdevel@gmail.com" }]
 
-dependencies = ["PyYAML>=6.0.1", "setuptools>=70.2.0"]
+dependencies = [
+    "PyYAML>=6.0.1",
+    "setuptools>=70.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.1.0",
+]
 
 [project.urls]
 repository = "https://github.com/owdevel/ytdl-nfo"
@@ -15,13 +25,34 @@ repository = "https://github.com/owdevel/ytdl-nfo"
 [project.scripts]
 ytdl-nfo = "ytdl_nfo:main"
 
-[tool.poetry.group.dev]
-optional = true
-
-[tool.poetry.group.dev.dependencies]
-flake8 = "^5.0.4"
-autopep8 = "^1.6.0"
-
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--cov=ytdl_nfo",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+markers = [
+    "unit: Unit tests for individual components",
+    "integration: End-to-end integration tests",
+]
