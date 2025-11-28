@@ -19,8 +19,11 @@ class Ytdl_nfo:
             try:
                 with open(self.path, "rt", encoding="utf-8") as f:
                     self.data = json.load(f)
-            except json.JSONDecodeError:
-                print(f"Error: Failed to parse JSON in file {self.path}")
+            except (json.JSONDecodeError, FileNotFoundError, OSError) as e:
+                if isinstance(e, json.JSONDecodeError):
+                    print(f"Error: Failed to parse JSON in file {self.path}")
+                else:
+                    print(f"Error: Failed to read file {self.path}")
                 self.input_ok = False
 
         if self.extractor is None and self.data is not None:
