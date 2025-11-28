@@ -6,6 +6,7 @@ import pytest
 from ytdl_nfo.nfo import Nfo
 
 
+@pytest.mark.unit
 class TestNfoTemplateLoading:
     """Test YAML template loading functionality."""
 
@@ -30,6 +31,7 @@ class TestNfoTemplateLoading:
         assert invalid_nfo.config_ok() is False
 
 
+@pytest.mark.unit
 class TestNfoGeneration:
     """Test NFO generation functionality."""
 

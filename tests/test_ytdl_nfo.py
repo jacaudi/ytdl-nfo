@@ -5,6 +5,7 @@ import pytest
 from ytdl_nfo import Ytdl_nfo
 
 
+@pytest.mark.unit
 class TestYtdlNfoJSONParsing:
     """Test JSON parsing functionality."""
 
@@ -30,6 +31,7 @@ class TestYtdlNfoJSONParsing:
         assert ytdl.data is None
 
 
+@pytest.mark.unit
 class TestYtdlNfoExtractorDetection:
     """Test extractor detection and normalization."""
 
@@ -65,6 +67,7 @@ class TestYtdlNfoExtractorDetection:
         assert ytdl.extractor is None or isinstance(ytdl.extractor, str)
 
 
+@pytest.mark.unit
 class TestYtdlNfoFilenameDerivarion:
     """Test filename derivation logic."""
 
