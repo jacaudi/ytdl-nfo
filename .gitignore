@@ -139,3 +139,7 @@ cython_debug/
 
 # Git worktrees
 .worktrees/
+
+# Claude
+.claude/
+.private-journal/
