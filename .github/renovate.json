@@ -7,11 +7,19 @@
       ":timezone(America/Los_Angeles)",
       ":semanticCommits"
     ],
-    "assignees": ["jacaudi"],
     "dependencyDashboardTitle": "Renovate Dashboard 🤖",
+    "forkProcessing": "enabled",
+    "assignees": ["jacaudi"],
     "suppressNotifications": [
       "prEditedNotification",
       "prIgnoreNotification"
     ],
-    "forkProcessing": "enabled"
+    "packageRules": [
+      {
+        "description": "Python version n-1 (one version behind latest)",
+        "matchDatasources": ["docker", "pyenv"],
+        "matchPackageNames": ["python", "mcr.microsoft.com/devcontainers/python"],
+        "allowedVersions": "<3.14"
+      }
+    ]
 }
