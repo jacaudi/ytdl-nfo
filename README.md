@@ -1,12 +1,8 @@
-# ytdl-nfo : youtube-dl NFO generator
+# ytdl-nfo : yt-dlp NFO generator
 
-[youtube-dl](https://github.com/ytdl-org/youtube-dl) is an incredibly useful tool for downloading and archiving footage from across the web; however, viewing and organizing these files can be a hassle.
+[yt-dlp](https://github.com/yt-dlp/yt-dlp) is an incredibly useful tool for downloading and archiving footage from across the web. **ytdl-nfo** automates metadata processing so that media files can be easily imported into media centers such as [Plex](https://www.plex.tv/), [Emby](https://emby.media/), [Jellyfin](https://jellyfin.org/), etc. It does this by parsing each `.info.json` file created by yt-dlp (using the `--write-info-json` flag) and generating a Kodi-compatible `.nfo` file.
 
-**ytdl-nfo** automates metadata processing so that media files can be easily imported into media centers such as [Plex](https://www.plex.tv/), [Emby](https://emby.media/), [Jellyfin](https://jellyfin.org/), etc. It does this by parsing each `.info.json` file created by youtube-dl (using the `--write-info-json` flag) and generating a Kodi-compatible `.nfo` file.
-
-While this package was originally built for youtube-dl, the goal is to maintain compatibility with related forks, such as [yt-dlp](https://github.com/yt-dlp/yt-dlp).
-
-> :warning: **Warning**: This package is still in early stages and breaking changes may be introduced.
+While this package is built for yt-dlp, it maintains compatibility with [youtube-dl](https://github.com/ytdl-org/youtube-dl).
 
 ## Installation
 
@@ -14,30 +10,15 @@ While this package was originally built for youtube-dl, the goal is to maintain 
 
 [pipx](https://github.com/pipxproject/pipx) is a tool that installs a package and its dependencies in an isolated environment.
 
-1. Install [Python 3.8](https://www.python.org/downloads/) (or later)
+1. Install [Python 3.13](https://www.python.org/downloads/) (or later)
 2. Install [pipx](https://github.com/pipxproject/pipx)
 3. Run `pipx install ytdl-nfo`
 
-### Python 3 pip
-
-1. Install [Python 3.8](https://www.python.org/downloads/) (or later)
-2. Installed [pip](https://pip.pypa.io/en/stable/installation/)
-3. Run `pip install ytdl-nfo`
-
-### Package from Source
-
-1. Install [Python 3.8](https://www.python.org/downloads/) (or later)
-2. Install [uv](https://docs.astral.sh/uv/)
-3. Clone the repo using `git clone https://github.com/owdevel/ytdl_nfo.git`
-4. Create a dev environment with `uv sync`
-5. Build with `uv build`
-6. Install from the `dist` directory with `pip install ./dist/ytdl_nfo-x.x.x.tar.gz`
-
 ## Usage
 
-youtube-dl uses site-specific extractors to collect technical data about a media file. This metadata, along with the extractor ID, are written to a `.info.json` file when the `--write-info-json` flag is used. ytdl-nfo uses a set of YAML configs, located in `ytdl_nfo/configs` to control how metadata from the JSON file is mapped to NFO tags.
+yt-dlp uses site-specific extractors to collect technical data about a media file. This metadata, along with the extractor ID, are written to a `.info.json` file when the `--write-info-json` flag is used. ytdl-nfo uses YAML templates in `ytdl_nfo/configs` to map JSON metadata to NFO tags.
 
-If extractor auto-detection fails or you want to override the default, use the `--extractor` option to specify a particular template. The template must be located at `ytdl_nfo/configs/<EXTRACTOR_TEMPLATE_NAME>.yaml`.
+If extractor auto-detection fails or you want to override the default, use the `--extractor` option to specify a particular template.
 
 ```text
 python3 -m ytdl_nfo [-h] [--config] [-e EXTRACTOR] [--regex REGEX] [-w] JSON_FILE
@@ -73,41 +54,4 @@ ytdl-nfo --extractor custom_extractor_name great_video.info.json
 
 ## Contributing
 
-This is a small project I started to learn how to use the Python packaging system whilst providing some useful functionality for my home server setup. Issues/Pull Requests and constructive criticism are welcome.
-
-### Development Environment
-
-#### VS Code Dev Container (Recommended)
-
-1. Install [Docker](https://www.docker.com/get-started)
-2. Install [VS Code](https://code.visualstudio.com/) with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-3. Clone your fork using `git clone git@github.com:<YOUR_USERNAME>/ytdl-nfo.git`
-4. Open the project in VS Code
-5. When prompted, click "Reopen in Container" (or use Command Palette → "Dev Containers: Reopen in Container")
-6. VS Code will build the container with all dependencies pre-installed
-7. Run the application using `uv run ytdl-nfo`
-
-The devcontainer includes Python 3.11, uv, ruff, and pytest pre-configured.
-
-#### Local Development (Alternative)
-
-1. Install [Python 3.8](https://www.python.org/downloads/) (or later)
-2. Install [uv](https://docs.astral.sh/uv/)
-3. Create a fork of this repo
-4. Clone your fork using `git clone git@github.com:<YOUR_USERNAME>/ytdl-nfo.git`
-5. Change to the project directory and initialize the environment using uv
-
-    ```bash
-    cd ytdl-nfo
-    uv sync
-    ```
-
-6. Run the application using `uv run ytdl-nfo`
-
-## Todo
-
-- [ ] Add try catches to pretty print errors
-- [ ] Documentation and templates for creating custom extractors
-- [x] Documentation of CLI arguments
-- [x] Recursive folder searching
-- [x] Add package to pypi
+Contributions are welcome! This project uses VS Code Dev Containers for consistent development environments. See `CLAUDE.md` for development setup instructions.

@@ -3,7 +3,7 @@ name = "ytdl-nfo"
 version = "0.3.0"
 description = "Utility to convert youtube-dl/yt-dlp json metadata to .nfo"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.13"
 license = { text = "Unlicense" }
 authors = [{ name = "Owen", email = "owdevel@gmail.com" }]
 
@@ -31,7 +31,7 @@ build-backend = "hatchling.build"
 
 [tool.ruff]
 line-length = 100
-target-version = "py38"
+target-version = "py313"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N"]
