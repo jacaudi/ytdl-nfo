@@ -9,7 +9,6 @@ authors = [{ name = "Owen", email = "owdevel@gmail.com" }]
 
 dependencies = [
     "PyYAML>=6.0.1",
-    "setuptools>=70.2.0",
 ]
 
 [project.optional-dependencies]
