@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: CI
+
+on:
+  push:
+    branches: ['**']  # Run on all branches
+  pull_request:       # Run on all PRs
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (Python 3.13)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Run tests in devcontainer
+        uses: devcontainers/ci@v0.3
+        with:
+          runCmd: |
+            uv sync
+            uv run ruff check ytdl_nfo
+            uv run pytest
