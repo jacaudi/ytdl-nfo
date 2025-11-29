@@ -34,7 +34,6 @@ jobs:
       contents: read
     container:
       image: semgrep/semgrep
-    if: (github.actor != 'dependabot[bot]')
     steps:
       - name: Checkout
         uses: actions/checkout@v6
