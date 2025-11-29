@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Run tests in devcontainer
-        uses: devcontainers/ci@v0.3
+        uses: devcontainers/ci@v0.3.1900000417
         with:
           push: never
           runCmd: |
@@ -34,7 +34,7 @@ jobs:
     permissions:
       contents: read
     container:
-      image: semgrep/semgrep
+      image: semgrep/semgrep:1.144.0
     steps:
       - name: Checkout
         uses: actions/checkout@v6

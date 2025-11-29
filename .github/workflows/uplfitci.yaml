@@ -33,7 +33,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run Uplift
-        uses: gembaadvantage/uplift-action@v2
+        uses: gembaadvantage/uplift-action@v2.0.2
         with:
           args: release
         env:
