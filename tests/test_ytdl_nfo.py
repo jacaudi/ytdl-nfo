@@ -1,7 +1,9 @@
 """Tests for Ytdl_nfo class."""
 
 import json
+
 import pytest
+
 from ytdl_nfo import Ytdl_nfo
 
 

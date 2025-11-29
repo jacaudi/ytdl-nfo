@@ -1,8 +1,10 @@
 """Integration tests for end-to-end workflows."""
 
 import json
-import pytest
 from pathlib import Path
+
+import pytest
+
 from ytdl_nfo import Ytdl_nfo
 
 
@@ -19,7 +21,7 @@ class TestEndToEndWorkflow:
 
         # Process file
         ytdl = Ytdl_nfo(str(json_file))
-        success = ytdl.process()
+        ytdl.process()
 
         # Verify NFO was created
         nfo_path = ytdl.get_nfo_path()

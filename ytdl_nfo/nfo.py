@@ -2,9 +2,9 @@ import ast
 import datetime as dt
 import xml.etree.ElementTree as ET
 from collections import defaultdict
+from importlib.resources import files
 from xml.dom import minidom
 
-from importlib.resources import files
 import yaml
 
 

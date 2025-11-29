@@ -1,8 +1,8 @@
 """Tests for Nfo class."""
 
-import xml.etree.ElementTree as ET
 
 import pytest
+
 from ytdl_nfo.nfo import Nfo
 
 
