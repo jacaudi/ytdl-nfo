@@ -4,11 +4,12 @@ name: CI
 
 on:
   push:
-    branches: ['**']  # Run on all branches
+    branches:
+      - main  # Only run on pushes to main
     paths-ignore:
       - 'docs/**'
       - '**.md'
-  pull_request:       # Run on all PRs
+  pull_request:  # Run on all PRs (covers feature branch testing)
     paths-ignore:
       - 'docs/**'
       - '**.md'
@@ -21,7 +22,6 @@ jobs:
   test:
     name: Code Validation
     runs-on: ubuntu-latest
-    if: github.event_name != 'push' || !github.event.pull_request
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -51,7 +51,6 @@ jobs:
   semgrep:
     name: Security Scan
     runs-on: ubuntu-latest
-    if: github.event_name != 'push' || !github.event.pull_request
     permissions:
       contents: read
     container:
@@ -80,7 +79,7 @@ jobs:
     name: Test Report
     runs-on: ubuntu-latest
     needs: [test, semgrep]
-    if: always() && (github.event_name != 'push' || !github.event.pull_request)
+    if: always()
     steps:
       - name: Checkout
         uses: actions/checkout@v6
