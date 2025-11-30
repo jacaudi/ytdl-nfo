@@ -31,9 +31,9 @@ jobs:
         with:
           push: never
           runCmd: |
+            START_TIME=$(date +%s)
             uv sync --extra dev
             uv run ruff check ytdl_nfo
-            START_TIME=$(date +%s)
             uv run pytest --json-report --json-report-file=pytest-report.json
             uv run coverage json
             END_TIME=$(date +%s)
