@@ -22,7 +22,7 @@ def generate_report(job_name: str, semgrep_json_path: Path, duration: float) -> 
     # Extract findings
     results = semgrep_data.get("results", [])
     findings = []
-    severity_counts = {"error": 0, "warning": 0, "info": 0}
+    severity_counts = {"critical": 0, "error": 0, "warning": 0, "info": 0}
 
     for result in results:
         severity = result.get("extra", {}).get("severity", "info").lower()
@@ -38,7 +38,7 @@ def generate_report(job_name: str, semgrep_json_path: Path, duration: float) -> 
         })
 
     # Determine status (fail if any errors)
-    status = "failure" if severity_counts["error"] > 0 else "success"
+    status = "failure" if (severity_counts["critical"] > 0 or severity_counts["error"] > 0) else "success"
 
     return {
         "job_name": job_name,
