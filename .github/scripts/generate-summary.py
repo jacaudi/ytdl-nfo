@@ -84,9 +84,14 @@ def generate_summary(results: list[dict]) -> str:
         severity_counts = security_results.get("severity_counts", {})
         errors = severity_counts.get("error", 0)
         warnings = severity_counts.get("warning", 0)
+        critical = severity_counts.get("critical", 0)
 
         if findings_count > 0:
-            security_str = f"{errors}E/{warnings}W"
+            # Show critical separately if present
+            if critical > 0:
+                security_str = f"{critical}C/{errors}E/{warnings}W"
+            else:
+                security_str = f"{errors}E/{warnings}W"
         else:
             security_str = "0 findings"
 
