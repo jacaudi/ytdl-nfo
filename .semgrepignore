@@ -1,0 +1,11 @@
+# Semgrep ignore patterns for ytdl-nfo
+# https://semgrep.dev/docs/ignoring-files-folders-code/
+
+# Note: .semgrepignore is for excluding files/paths, not rules
+# To exclude specific rule findings, use nosemgrep comments in code
+# or --exclude-rule in CLI
+
+# Exclude common build/test artifacts (in addition to defaults)
+.pytest_cache/
+htmlcov/
+*.egg-info/
