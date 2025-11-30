@@ -59,4 +59,17 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Run Semgrep
-        run: semgrep scan --config auto
+        id: semgrep
+        run: |
+          START_TIME=$(date +%s)
+          semgrep scan --config auto --json --output semgrep-report.json || true
+          END_TIME=$(date +%s)
+          DURATION=$((END_TIME - START_TIME))
+          python3 .github/scripts/generate-semgrep-report.py "Security Scan" semgrep-report.json $DURATION
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-scan-results
+          path: results.json
