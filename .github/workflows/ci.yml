@@ -26,13 +26,26 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Run tests in devcontainer
+        id: devcontainer
         uses: devcontainers/ci@v0.3.1900000417
         with:
           push: never
           runCmd: |
             uv sync --extra dev
             uv run ruff check ytdl_nfo
-            uv run pytest
+            START_TIME=$(date +%s)
+            uv run pytest --json-report --json-report-file=pytest-report.json
+            uv run coverage json
+            END_TIME=$(date +%s)
+            DURATION=$((END_TIME - START_TIME))
+            python .github/scripts/generate-test-report.py "Code Validation" pytest-report.json coverage.json $DURATION
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-validation-results
+          path: results.json
 
   semgrep:
     name: Security Scan
