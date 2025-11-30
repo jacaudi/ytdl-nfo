@@ -1,0 +1,20 @@
+# Uplift configuration for semantic versioning and changelog generation
+git:
+  ignoreDetached: false
+
+bumps:
+  # Update pyproject.toml version field
+  - file: pyproject.toml
+    regex:
+      - pattern: 'version = "([0-9]+\.[0-9]+\.[0-9]+)"'
+        semver: true
+        count: 1
+
+changelog:
+  sort: asc
+  exclude:
+    - ^chore
+    - ^ci
+    - ^docs
+    - ^style
+    - ^test
