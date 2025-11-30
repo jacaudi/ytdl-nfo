@@ -2,7 +2,7 @@ import ast
 import datetime as dt
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-from importlib.resources import files
+from importlib.resources import files  # nosemgrep: python.lang.compatibility.python37.python37-compatibility-importlib2
 from xml.dom import minidom
 
 import yaml
