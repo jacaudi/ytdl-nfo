@@ -6,13 +6,44 @@ While this package is built for yt-dlp, it maintains compatibility with [youtube
 
 ## Installation
 
-### Python 3 pipx (recommended)
+### From GitHub Releases
 
-[pipx](https://github.com/pipxproject/pipx) is a tool that installs a package and its dependencies in an isolated environment.
+Download the latest `.whl` file from [Releases](https://github.com/jacaudi/ytdl-nfo/releases), then:
 
-1. Install [Python 3.13](https://www.python.org/downloads/) (or later)
-2. Install [pipx](https://github.com/pipxproject/pipx)
-3. Run `pipx install ytdl-nfo`
+```bash
+# Using pipx (recommended for CLI tools)
+pipx install ytdl_nfo-VERSION-py3-none-any.whl
+
+# Using uv
+uv tool install ytdl_nfo-VERSION-py3-none-any.whl
+
+# Using pip
+pip install ytdl_nfo-VERSION-py3-none-any.whl
+```
+
+### Using in Python Projects
+
+To use ytdl-nfo packages from GitHub Releases in your Python projects:
+
+**With pip (requirements.txt):**
+```
+ytdl-nfo @ https://github.com/jacaudi/ytdl-nfo/releases/download/vVERSION/ytdl_nfo-VERSION-py3-none-any.whl
+```
+
+**With uv (pyproject.toml):**
+```toml
+[project]
+dependencies = [
+    "ytdl-nfo @ https://github.com/jacaudi/ytdl-nfo/releases/download/vVERSION/ytdl_nfo-VERSION-py3-none-any.whl"
+]
+```
+
+**With Poetry:**
+```bash
+poetry add https://github.com/jacaudi/ytdl-nfo/releases/download/vVERSION/ytdl_nfo-VERSION-py3-none-any.whl
+```
+
+**Note:** Replace `VERSION` with the actual version number (e.g., `0.1.0`).
 
 ## Usage
 
