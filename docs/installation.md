@@ -1,106 +1,63 @@
 # Installation Guide
 
-Complete installation instructions for ytdl-nfo across different platforms and package managers.
+Complete installation instructions for ytdl-nfo.
 
 ## Table of Contents
 
-- [For End Users](#for-end-users)
-  - [From GitHub Packages (Recommended)](#from-github-packages-recommended)
-  - [From GitHub Releases](#from-github-releases)
+- [From GitHub Releases](#from-github-releases)
+- [From PyPI (Coming Soon)](#from-pypi-coming-soon)
 - [For Python Projects](#for-python-projects)
-  - [Using GitHub Packages](#using-github-packages)
-  - [Using GitHub Releases](#using-github-releases)
-- [Authentication](#authentication)
+- [Usage Examples](#usage-examples)
 
-## For End Users
+## From GitHub Releases
 
-### From GitHub Packages (Recommended)
+Download the latest `.whl` file from [Releases](https://github.com/jacaudi/ytdl-nfo/releases), then install:
 
-Install directly from the GitHub Packages registry:
+### Using pipx (Recommended for CLI Tools)
 
 ```bash
-# Using pipx (recommended for CLI tools)
-pipx install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
-
-# Using uv
-uv tool install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
-
-# Using pip
-pip install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
+pipx install ytdl_nfo-VERSION-py3-none-any.whl
 ```
 
-**Note:** Authentication may be required. See [Authentication](#authentication) section below.
-
-### From GitHub Releases
-
-Download the latest `.whl` file from [Releases](https://github.com/jacaudi/ytdl-nfo/releases), then:
+### Using uv
 
 ```bash
-# Using pipx (recommended for CLI tools)
-pipx install ytdl_nfo-VERSION-py3-none-any.whl
-
-# Using uv
 uv tool install ytdl_nfo-VERSION-py3-none-any.whl
+```
 
-# Using pip
+### Using pip
+
+```bash
 pip install ytdl_nfo-VERSION-py3-none-any.whl
 ```
 
 **Note:** Replace `VERSION` with the actual version number (e.g., `0.1.0`).
 
-## For Python Projects
+## From PyPI (Coming Soon)
 
-### Using GitHub Packages
-
-#### With uv (pyproject.toml)
-
-```toml
-[[tool.uv.index]]
-name = "github-packages"
-url = "https://pypi.pkg.github.com/jacaudi/simple/"
-
-[project]
-dependencies = [
-    "ytdl-nfo"
-]
-```
-
-#### With pip
-
-Configure pip to use GitHub Packages as the package index:
+Once published to PyPI, you'll be able to install directly:
 
 ```bash
-# Set globally
-pip config set global.index-url https://pypi.pkg.github.com/jacaudi/simple/
+# Using pipx (recommended for CLI tools)
+pipx install ytdl-nfo
+
+# Using uv
+uv tool install ytdl-nfo
+
+# Using pip
 pip install ytdl-nfo
-
-# Or per-project (requirements.txt)
---index-url https://pypi.pkg.github.com/jacaudi/simple/
-ytdl-nfo
 ```
 
-#### With Poetry
+## For Python Projects
 
-```toml
-[[tool.poetry.source]]
-name = "github-packages"
-url = "https://pypi.pkg.github.com/jacaudi/simple/"
-priority = "primary"
+### From GitHub Releases
 
-[tool.poetry.dependencies]
-ytdl-nfo = "*"
-```
-
-### Using GitHub Releases
-
-#### With pip (requirements.txt)
-
+**With pip (requirements.txt):**
 ```
 ytdl-nfo @ https://github.com/jacaudi/ytdl-nfo/releases/download/vVERSION/ytdl_nfo-VERSION-py3-none-any.whl
 ```
 
-#### With uv (pyproject.toml)
-
+**With uv (pyproject.toml):**
 ```toml
 [project]
 dependencies = [
@@ -108,58 +65,85 @@ dependencies = [
 ]
 ```
 
-#### With Poetry
-
+**With Poetry:**
 ```bash
 poetry add https://github.com/jacaudi/ytdl-nfo/releases/download/vVERSION/ytdl_nfo-VERSION-py3-none-any.whl
 ```
 
 **Note:** Replace `VERSION` with the actual version number (e.g., `0.1.0`).
 
-## Authentication
+### From PyPI (Coming Soon)
 
-### GitHub Packages Authentication
-
-To install packages from GitHub Packages, you may need to authenticate with a GitHub personal access token (PAT).
-
-#### Creating a Personal Access Token
-
-1. Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
-2. Generate new token with `read:packages` scope
-3. Copy the token
-
-#### Configuring Authentication
-
-**With pip:**
-```bash
-# Add credentials to pip config
-pip config set global.index-url https://USERNAME:TOKEN@pypi.pkg.github.com/jacaudi/simple/
+**With pip (requirements.txt):**
+```
+ytdl-nfo
 ```
 
-**With uv:**
-```bash
-# Set environment variable
-export UV_INDEX_URL=https://USERNAME:TOKEN@pypi.pkg.github.com/jacaudi/simple/
-uv tool install ytdl-nfo
+**With uv (pyproject.toml):**
+```toml
+[project]
+dependencies = [
+    "ytdl-nfo"
+]
 ```
 
-**With pipx:**
+**With Poetry:**
 ```bash
-# Use environment variable
-PIP_INDEX_URL=https://USERNAME:TOKEN@pypi.pkg.github.com/jacaudi/simple/ pipx install ytdl-nfo
+poetry add ytdl-nfo
 ```
 
-**Note:** Replace `USERNAME` with your GitHub username and `TOKEN` with your personal access token.
+## Usage Examples
 
-### Security Note
-
-**Never commit credentials to version control.** Use environment variables or secure credential storage:
+### Basic Usage
 
 ```bash
-# Store in environment variable
-export GITHUB_TOKEN="your_token_here"
-pip install ytdl-nfo --index-url https://USERNAME:${GITHUB_TOKEN}@pypi.pkg.github.com/jacaudi/simple/
+# Display the configuration location
+ytdl-nfo --config
+
+# Convert a single video's metadata
+ytdl-nfo video.info.json
+
+# Process an entire directory recursively
+ytdl-nfo /path/to/videos/
 ```
+
+### Advanced Options
+
+```bash
+# Override extractor auto-detection
+ytdl-nfo --extractor youtube video.info.json
+
+# Use custom regex to match files
+ytdl-nfo --regex "\.json$" /path/to/videos/
+
+# Overwrite existing NFO files
+ytdl-nfo --overwrite /path/to/videos/
+```
+
+### Command-Line Options
+
+```
+ytdl-nfo [-h] [--config] [-e EXTRACTOR] [--regex REGEX] [-w] JSON_FILE
+
+positional arguments:
+  JSON_FILE             JSON file to convert or directory to process recursively
+
+options:
+  -h, --help            show this help message and exit
+  --config              Show the path to the config directory
+  -e EXTRACTOR, --extractor EXTRACTOR
+                        Specify specific extractor
+  -r, --regex REGEX     A regular expression used to search for JSON source files
+  -w, --overwrite       Overwrite existing NFO files
+```
+
+## How It Works
+
+yt-dlp uses site-specific extractors to collect technical data about a media file. This metadata, along with the extractor ID, are written to a `.info.json` file when the `--write-info-json` flag is used.
+
+ytdl-nfo uses YAML templates in `ytdl_nfo/configs` to map JSON metadata fields to standardized NFO XML format. Each extractor (youtube, twitch, vimeo, etc.) has its own template file.
+
+If extractor auto-detection fails or you want to override the default, use the `--extractor` option to specify a particular template.
 
 ## Verification
 
