@@ -53,22 +53,37 @@ jobs:
             dist/*.tar.gz
             dist/*.whl
           body: |
-            ## Installation from GitHub Release
+            ## Installation
+
+            ### From GitHub Packages (Recommended)
+
+            Install directly from the GitHub Packages registry:
+
+            ```bash
+            # Using pipx (recommended for CLI tools)
+            pipx install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
+
+            # Using uv
+            uv tool install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
+
+            # Using pip
+            pip install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
+            ```
+
+            **Note:** Authentication may be required. See [GitHub Packages authentication](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#authenticating-to-github-packages).
+
+            ### From GitHub Release Assets
 
             Download the `.whl` file from the assets below, then:
 
-            ### Using pipx (recommended for CLI tools)
             ```bash
+            # Using pipx (recommended for CLI tools)
             pipx install ytdl_nfo-${{ steps.version.outputs.VERSION }}-py3-none-any.whl
-            ```
 
-            ### Using uv
-            ```bash
+            # Using uv
             uv tool install ytdl_nfo-${{ steps.version.outputs.VERSION }}-py3-none-any.whl
-            ```
 
-            ### Using pip
-            ```bash
+            # Using pip
             pip install ytdl_nfo-${{ steps.version.outputs.VERSION }}-py3-none-any.whl
             ```
           generate_release_notes: true
