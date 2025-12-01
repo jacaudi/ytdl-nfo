@@ -7,12 +7,20 @@ on:
 
 permissions:
   contents: write  # Required to create releases
+  packages: write  # Required to publish to GitHub Packages
 
 jobs:
   build-and-release:
     name: Build and Release Package
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+
       - name: Checkout
         uses: actions/checkout@v6
 
@@ -26,6 +34,13 @@ jobs:
 
       - name: Build package
         run: uv build
+
+      - name: Publish to GitHub Packages
+        env:
+          UV_PUBLISH_URL: https://pypi.pkg.github.com/jacaudi/
+          UV_PUBLISH_USERNAME: jacaudi
+          UV_PUBLISH_PASSWORD: ${{ steps.app-token.outputs.token }}
+        run: uv publish
 
       - name: Get version from tag
         id: version
