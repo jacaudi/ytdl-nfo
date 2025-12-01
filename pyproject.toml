@@ -1,6 +1,6 @@
 [project]
 name = "ytdl-nfo"
-version = "0.3.0"
+version = "0.1.0"
 description = "Utility to convert youtube-dl/yt-dlp json metadata to .nfo"
 readme = "README.md"
 requires-python = ">=3.13"
