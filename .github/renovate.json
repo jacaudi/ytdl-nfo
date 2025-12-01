@@ -17,8 +17,8 @@
     "packageRules": [
       {
         "description": "Python version n-1 (one version behind latest)",
-        "matchDatasources": ["docker", "pyenv"],
-        "matchPackageNames": ["python", "mcr.microsoft.com/devcontainers/python"],
+        "matchDatasources": ["docker", "pyenv", "github-tags"],
+        "matchPackageNames": ["python", "mcr.microsoft.com/devcontainers/python", "actions/setup-python"],
         "allowedVersions": "<3.14"
       }
     ]
