@@ -1,5 +1,13 @@
 name: Release
 
+# To enable PyPI publishing:
+# 1. Create account on https://pypi.org (or https://test.pypi.org for testing)
+# 2. Generate API token from account settings
+# 3. Add token as GitHub secret:
+#    - TEST_PYPI_TOKEN for test.pypi.org
+#    - PYPI_TOKEN for pypi.org
+# 4. Uncomment the publish step(s) below in the build-and-release job
+
 on:
   push:
     tags:
@@ -7,20 +15,12 @@ on:
 
 permissions:
   contents: write  # Required to create releases
-  packages: write  # Required to publish to GitHub Packages
 
 jobs:
   build-and-release:
     name: Build and Release Package
     runs-on: ubuntu-latest
     steps:
-      - name: Generate GitHub App Token
-        id: app-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ secrets.BOT_APP_ID }}
-          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
-
       - name: Checkout
         uses: actions/checkout@v6
 
@@ -35,12 +35,11 @@ jobs:
       - name: Build package
         run: uv build
 
-      - name: Publish to GitHub Packages
-        env:
-          UV_PUBLISH_URL: https://pypi.pkg.github.com/jacaudi/
-          UV_PUBLISH_USERNAME: jacaudi
-          UV_PUBLISH_PASSWORD: ${{ steps.app-token.outputs.token }}
-        run: uv publish
+      # Uncomment to publish to production PyPI
+      # - name: Publish to PyPI
+      #   env:
+      #     UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
+      #   run: uv publish
 
       - name: Get version from tag
         id: version
@@ -55,35 +54,20 @@ jobs:
           body: |
             ## Installation
 
-            ### From GitHub Packages (Recommended)
-
-            Install directly from the GitHub Packages registry:
-
-            ```bash
-            # Using pipx (recommended for CLI tools)
-            pipx install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
-
-            # Using uv
-            uv tool install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
-
-            # Using pip
-            pip install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
-            ```
-
-            **Note:** Authentication may be required. See [GitHub Packages authentication](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#authenticating-to-github-packages).
-
-            ### From GitHub Release Assets
-
             Download the `.whl` file from the assets below, then:
 
+            ### Using pipx (recommended for CLI tools)
             ```bash
-            # Using pipx (recommended for CLI tools)
             pipx install ytdl_nfo-${{ steps.version.outputs.VERSION }}-py3-none-any.whl
+            ```
 
-            # Using uv
+            ### Using uv
+            ```bash
             uv tool install ytdl_nfo-${{ steps.version.outputs.VERSION }}-py3-none-any.whl
+            ```
 
-            # Using pip
+            ### Using pip
+            ```bash
             pip install ytdl_nfo-${{ steps.version.outputs.VERSION }}-py3-none-any.whl
             ```
           generate_release_notes: true

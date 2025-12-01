@@ -6,21 +6,42 @@ While this package is built for yt-dlp, it maintains compatibility with [youtube
 
 ## Installation
 
-### Quick Start
-
-**From GitHub Packages (Recommended):**
-```bash
-pipx install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
-```
-
-**From GitHub Releases:**
-
 Download the latest `.whl` file from [Releases](https://github.com/jacaudi/ytdl-nfo/releases), then:
+
 ```bash
+# Using pipx (recommended for CLI tools)
 pipx install ytdl_nfo-VERSION-py3-none-any.whl
+
+# Using uv
+uv tool install ytdl_nfo-VERSION-py3-none-any.whl
+
+# Using pip
+pip install ytdl_nfo-VERSION-py3-none-any.whl
 ```
 
-**For detailed installation instructions**, including authentication, Python project integration, and all package managers, see [docs/installation.md](docs/installation.md).
+**Note:** Replace `VERSION` with the actual version number (e.g., `0.1.0`).
+
+### Using in Python Projects
+
+**With pip (requirements.txt):**
+```
+ytdl-nfo @ https://github.com/jacaudi/ytdl-nfo/releases/download/vVERSION/ytdl_nfo-VERSION-py3-none-any.whl
+```
+
+**With uv (pyproject.toml):**
+```toml
+[project]
+dependencies = [
+    "ytdl-nfo @ https://github.com/jacaudi/ytdl-nfo/releases/download/vVERSION/ytdl_nfo-VERSION-py3-none-any.whl"
+]
+```
+
+**With Poetry:**
+```bash
+poetry add https://github.com/jacaudi/ytdl-nfo/releases/download/vVERSION/ytdl_nfo-VERSION-py3-none-any.whl
+```
+
+**Note:** Replace `VERSION` with the actual version number (e.g., `0.1.0`).
 
 ## Usage
 

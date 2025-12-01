@@ -1,11 +1,21 @@
 [project]
 name = "ytdl-nfo"
 version = "0.1.0"
-description = "Utility to convert youtube-dl/yt-dlp json metadata to .nfo"
+description = "Utility to convert yt-dlp metadata to .nfo"
 readme = "README.md"
 requires-python = ">=3.13"
 license = { text = "Unlicense" }
-authors = [{ name = "Owen", email = "owdevel@gmail.com" }]
+authors = [{ name = "jacaudi", email = "192259219+jacaudi@users.noreply.github.com" }]
+keywords = ["yt-dlp", "youtube-dl", "nfo", "kodi", "metadata", "plex", "jellyfin", "emby"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Multimedia :: Video",
+    "License :: Public Domain",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+]
 
 dependencies = [
     "PyYAML>=6.0.1",
@@ -20,7 +30,9 @@ dev = [
 ]
 
 [project.urls]
-repository = "https://github.com/owdevel/ytdl-nfo"
+repository = "https://github.com/jacaudi/ytdl-nfo"
+"Bug Tracker" = "https://github.com/jacaudi/ytdl-nfo/issues"
+"Changelog" = "https://github.com/jacaudi/ytdl-nfo/blob/main/CHANGELOG.md"
 
 [project.scripts]
 ytdl-nfo = "ytdl_nfo:main"
