@@ -6,7 +6,7 @@
 
 ## Overview
 
-Automated package building and GitHub Release creation triggered by Uplift version tags. Packages are built using uv and published to GitHub Releases with installation instructions.
+Automated package building and publishing triggered by Uplift version tags. Packages are built using uv and published to both GitHub Packages (Python registry) and GitHub Releases with installation instructions.
 
 ## Architecture
 
@@ -30,13 +30,15 @@ Automated package building and GitHub Release creation triggered by Uplift versi
 8. Tag push triggers Release workflow
    ↓
 9. Release workflow:
+   - Generates GitHub App token
    - Builds source distribution (.tar.gz)
    - Builds wheel (.whl)
+   - Publishes to GitHub Packages registry
    - Creates GitHub Release
    - Attaches artifacts
    - Adds installation instructions
    ↓
-10. Users download from GitHub Releases
+10. Users install from GitHub Packages or download from GitHub Releases
 ```
 
 ### Components
@@ -63,7 +65,11 @@ Automated package building and GitHub Release creation triggered by Uplift versi
 #### Release Workflow (.github/workflows/release.yaml)
 
 - **Trigger:** Tag push (v*.*.*)
+- **Authentication:** GitHub App (APP_ID + PRIVATE_KEY)
 - **Build Tool:** uv
+- **Publishing:**
+  - GitHub Packages registry: `https://pypi.pkg.github.com/jacaudi/`
+  - GitHub Releases: Attachments with auto-generated notes
 - **Artifacts:**
   - Source distribution: `ytdl_nfo-{version}.tar.gz`
   - Wheel: `ytdl_nfo-{version}-py3-none-any.whl`
@@ -82,11 +88,52 @@ Automated package building and GitHub Release creation triggered by Uplift versi
 
 ### For End Users
 
-1. **pipx** (recommended for CLI tools)
-2. **uv tool install**
-3. **pip install**
+#### From GitHub Packages (Recommended)
+
+```bash
+# Using pipx (recommended for CLI tools)
+pipx install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
+
+# Using uv
+uv tool install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
+
+# Using pip
+pip install ytdl-nfo --index-url https://pypi.pkg.github.com/jacaudi/simple/
+```
+
+**Note:** Authentication with GitHub personal access token may be required for private repositories.
+
+#### From GitHub Releases
+
+Download `.whl` file from releases and install directly:
+
+```bash
+pipx install ytdl_nfo-VERSION-py3-none-any.whl
+uv tool install ytdl_nfo-VERSION-py3-none-any.whl
+pip install ytdl_nfo-VERSION-py3-none-any.whl
+```
 
 ### For Python Projects
+
+#### From GitHub Packages
+
+**With uv (pyproject.toml):**
+```toml
+[[tool.uv.index]]
+name = "github-packages"
+url = "https://pypi.pkg.github.com/jacaudi/simple/"
+
+[project]
+dependencies = ["ytdl-nfo"]
+```
+
+**With pip:**
+```bash
+pip config set global.index-url https://pypi.pkg.github.com/jacaudi/simple/
+pip install ytdl-nfo
+```
+
+#### From GitHub Releases
 
 - **pip:** requirements.txt with GitHub URL
 - **uv:** pyproject.toml dependencies with GitHub URL
@@ -119,7 +166,8 @@ To add PyPI publishing later:
 - Doesn't count against user rate limits
 
 **Required Permissions:**
-- Contents: Read and write (push commits/tags)
+- Contents: Read and write (push commits/tags, create releases)
+- Packages: Write (publish to GitHub Packages)
 - Metadata: Read (default)
 
 **Required Secrets:**
@@ -164,7 +212,8 @@ To add PyPI publishing later:
 - [x] Uplift workflow uses GitHub App authentication
 - [x] Release workflow triggers on version tags
 - [x] Packages build successfully (source + wheel)
+- [x] Packages published to GitHub Packages registry
 - [x] GitHub Releases created automatically
-- [x] Installation instructions in release notes
-- [x] README updated with installation methods
+- [x] Installation instructions in release notes (both sources)
+- [x] README updated with installation methods (both sources)
 - [x] Local build verification passes
