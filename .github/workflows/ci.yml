@@ -54,7 +54,7 @@ jobs:
     permissions:
       contents: read
     container:
-      image: semgrep/semgrep:1.144.1
+      image: semgrep/semgrep:1.145.0
     steps:
       - name: Checkout
         uses: actions/checkout@v6
